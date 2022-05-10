@@ -41,30 +41,15 @@ VALUES
     'Apple', -- Name
     '2022-05-17', -- ExpirationDate
     1, -- CategoryId
-    null, -- ImageId
+    NULL, -- ImageId
     1 -- LocationId
 ),
 (
     'Milk', -- Name
     '2022-05-10', -- ExpirationDate
     1, -- CategoryId
-    null, -- ImageId
+    NULL, -- ImageId
     3 -- LocationIINSERT INTO Locations
-(
-    `Name`
-)
-VALUES
-(
-    'Kitchen'
-),
-(
-    'Master Bathroom'
-),
-(
-    'Fridge'
-),
-(
-    'Pantry'
 );
 
 INSERT INTO Images
@@ -107,5 +92,4 @@ VALUES
     1, -- CategoryId
     2, -- ImageId
     3 -- LocationId
-);d
 );
