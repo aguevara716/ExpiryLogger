@@ -7,6 +7,7 @@ AS
         p.CategoryId as `CategoryId`,
         c.`Name` as `CategoryName`,
         p.ImageId as `ImageId`,
+        i.`Name` as `ImageName`,
         i.`File` as `ImageFile`,
         i.`Url` as `ImageUrl`,
         p.LocationId as `LocationId`,
