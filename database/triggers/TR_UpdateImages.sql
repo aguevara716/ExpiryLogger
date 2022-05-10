@@ -1,7 +1,11 @@
-CREATE OR REPLACE TRIGGER TR_UpsertImages
+DELIMITER //
+
+CREATE OR REPLACE TRIGGER TR_UpdateImages
 BEFORE UPDATE ON Images FOR EACH ROW
 BEGIN
     IF new.`File` IS NULL AND new.`Url` IS NULL THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'You must specify either the [Data] OR [Url]';
-    END IF
-END;
+    END IF;
+END; //
+
+DELIMITER ;
