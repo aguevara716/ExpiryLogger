@@ -1,0 +1,2 @@
+Authentication code based on
+https://github.com/cornflourblue/dotnet-6-jwt-authentication-api
