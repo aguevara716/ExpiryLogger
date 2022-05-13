@@ -1,5 +1,6 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using ExpiryLogger.Api.Entities;
 using ExpiryLogger.Api.Services;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -10,11 +11,13 @@ public class JwtMiddleware
 {
     private readonly RequestDelegate _next;
     private readonly AppSettings _appSettings;
+    private readonly Dictionary<string, User> _userCache;
 
     public JwtMiddleware(RequestDelegate next, IOptions<AppSettings> appSettings)
     {
         _next = next;
         _appSettings = appSettings.Value;
+        _userCache = new Dictionary<string, User>();
     }
 
     public async Task Invoke(HttpContext context, IUserService userService)
@@ -42,15 +45,29 @@ public class JwtMiddleware
             }, out SecurityToken validatedToken);
 
             var jwtToken = (JwtSecurityToken)validatedToken;
-            var userId = int.Parse(jwtToken.Claims.First(t => t.Type == "id").Value);
+            var idClaim = jwtToken.Claims.First(t => t.Type.Equals(nameof(User.Id), StringComparison.InvariantCultureIgnoreCase));
+            var userId = int.Parse(idClaim.Value);
 
-            // attach user to context on successful jwt validation
-            context.Items["User"] = userService.GetById(userId);
+            var user = GetUserFromCacheOrDatabase(token, userId, userService);
+            context.Items["User"] = _userCache[token];
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex);
         }
+    }
+
+    private User GetUserFromCacheOrDatabase(string token, int userId, IUserService userService)
+    {
+        if (_userCache.ContainsKey(token))
+            return _userCache[token];
+
+        var user = userService.GetById(userId);
+        if (user is null)
+            throw new Exception($"User with ID {userId} not found");
+
+        _userCache.Add(token, user);
+        return user;
     }
 
 }
