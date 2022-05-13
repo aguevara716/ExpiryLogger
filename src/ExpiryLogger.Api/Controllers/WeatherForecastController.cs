@@ -1,7 +1,9 @@
+using ExpiryLogger.Api.Helpers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ExpiryLogger.Api.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
