@@ -9,9 +9,9 @@ namespace ExpiryLogger.Api.Controllers;
 [ApiController]
 [Route("[controller]")]
 public abstract class CrudControllerBase<T> : ControllerBase
-		where T : IEntity
-	{
-		private readonly IRepository<T> _repository;
+        where T : IEntity
+{
+    private readonly IRepository<T> _repository;
 
     protected CrudControllerBase(IRepository<T> repository)
     {

@@ -128,9 +128,8 @@ namespace ExpiryLogger.DataAccessLayer.Repositories
             var entities = Get();
             if (entities is null || !entities.Any())
                 return 0;
-            
+
             return Delete(entities);
         }
     }
 }
-
