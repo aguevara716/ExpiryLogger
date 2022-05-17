@@ -1,5 +1,8 @@
 using ExpiryLogger.Api.Helpers;
 using ExpiryLogger.Api.Services;
+using ExpiryLogger.DataAccessLayer;
+using ExpiryLogger.DataAccessLayer.Entities;
+using ExpiryLogger.DataAccessLayer.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +14,15 @@ builder.Services.AddControllers();
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 
 // configure DI for application services
-builder.Services.AddScoped<IUserService, UserService>();
+builder.Services
+    .AddScoped<IUserService, UserService>()
+    .AddEntityFrameworkMySql().AddDbContext<ExpirationLoggerContext>()
+    .AddScoped<IRepository<Category>, MariaDbRepository<Category>>()
+    .AddScoped<IRepository<Image>, MariaDbRepository<Image>>()
+    .AddScoped<IRepository<Location>, MariaDbRepository<Location>>()
+    .AddScoped<IRepository<Product>, MariaDbRepository<Product>>()
+    .AddScoped<IRepository<ProductDetail>, ProductDetailsRepository>()
+    ;
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

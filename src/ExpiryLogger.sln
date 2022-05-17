@@ -5,6 +5,8 @@ VisualStudioVersion = 17.3.32505.426
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpiryLogger.Api", "ExpiryLogger.Api\ExpiryLogger.Api.csproj", "{24B531CC-EB49-4AC9-B95C-13A632D5F9D8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpiryLogger.DataAccessLayer", "ExpiryLogger.DataAccessLayer\ExpiryLogger.DataAccessLayer.csproj", "{F245D3BA-9AEA-4595-BF7C-8EE56D5B51B6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{24B531CC-EB49-4AC9-B95C-13A632D5F9D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{24B531CC-EB49-4AC9-B95C-13A632D5F9D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{24B531CC-EB49-4AC9-B95C-13A632D5F9D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F245D3BA-9AEA-4595-BF7C-8EE56D5B51B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F245D3BA-9AEA-4595-BF7C-8EE56D5B51B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F245D3BA-9AEA-4595-BF7C-8EE56D5B51B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F245D3BA-9AEA-4595-BF7C-8EE56D5B51B6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
