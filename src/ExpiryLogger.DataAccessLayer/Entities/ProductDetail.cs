@@ -29,6 +29,90 @@ public class ProductDetail : IEntity
         Name = string.Empty;
     }
 
+    public Category? GetCategory()
+    {
+        if (!CategoryId.HasValue && CategoryName is null)
+            return null;
+        var category = new Category
+        {
+            Id = CategoryId.GetValueOrDefault(),
+            Name = CategoryName is null ? string.Empty : CategoryName
+        };
+        return category;
+    }
+
+    public void SetCategory(Category? category)
+    {
+        CategoryId = category?.Id;
+        CategoryName = category?.Name;
+    }
+
+    public Image? GetImage()
+    {
+        if (!ImageId.HasValue && ImageName is null && ImageFile is null && ImageUrl is null)
+            return null;
+        var image = new Image
+        {
+            File = ImageFile,
+            Id = ImageId.GetValueOrDefault(),
+            Name = ImageName is null ? string.Empty : ImageName,
+            Url = ImageUrl
+        };
+        return image;
+    }
+
+    public void SetImage(Image? image)
+    {
+        ImageFile = image?.File;
+        ImageId = image?.Id;
+        ImageName = image?.Name;
+        ImageUrl = image?.Url;
+    }
+
+    public Location? GetLocation()
+    {
+        if (!LocationId.HasValue && LocationName is null)
+            return null;
+        var location = new Location
+        {
+            Id = LocationId.GetValueOrDefault(),
+            Name = LocationName is null ? string.Empty : LocationName
+        };
+        return location;
+    }
+
+    public void SetLocation(Location? location)
+    {
+        LocationId = location?.Id;
+        LocationName = location?.Name;
+    }
+
+    public Product GetProduct()
+    {
+        var product = new Product
+        {
+            AddDate = AddDate,
+            CategoryId = CategoryId,
+            ExpirationDate = ExpirationDate,
+            Id = ProductId,
+            ImageId = ImageId,
+            LocationId = LocationId,
+            Name = Name
+        };
+        return product;
+    }
+
+    public void SetProduct(Product product)
+    {
+        AddDate = product.AddDate;
+        CategoryId = product.CategoryId;
+        ExpirationDate = product.ExpirationDate;
+        ProductId = product.Id;
+        ImageId = product.ImageId;
+        LocationId = product.LocationId;
+        Name = product.Name;
+    }
+
     public override bool Equals(object? obj)
     {
         return obj is ProductDetail detail &&

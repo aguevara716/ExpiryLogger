@@ -21,7 +21,7 @@ builder.Services
     .AddScoped<IRepository<Image>, MariaDbRepository<Image>>()
     .AddScoped<IRepository<Location>, MariaDbRepository<Location>>()
     .AddScoped<IRepository<Product>, MariaDbRepository<Product>>()
-    .AddScoped<IRepository<ProductDetail>, MariaDbRepository<ProductDetail>>()
+    .AddScoped<IRepository<ProductDetail>, ProductDetailsRepository>()
     ;
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
