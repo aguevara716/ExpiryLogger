@@ -29,4 +29,9 @@ public class ExpirationLoggerContext : DbContext
         optionsBuilder.UseMySql(connectionString, ServerVersion.Parse("10.3.34-mariadb"));
     }
 
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<ProductDetail>().HasNoKey().ToView("ProductDetails");
+    }
+
 }
