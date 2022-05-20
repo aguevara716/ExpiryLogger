@@ -15,6 +15,13 @@ public class Location : IEntity
     [StringLength(200)]
     public string Name { get; set; }
 
+    [Required]
+    [ForeignKey("FK_Location_AddBy")]
+    public int AddBy { get; set; }
+
+    [Required]
+    public DateTime AddDate { get; set; }
+
     public Location()
     {
         Name = string.Empty;
@@ -24,12 +31,13 @@ public class Location : IEntity
     {
         return obj is Location location &&
                Id == location.Id &&
-               Name == location.Name;
+               Name == location.Name &&
+               AddBy == location.AddBy &&
+               AddDate == location.AddDate;
     }
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(Id, Name);
+        return HashCode.Combine(Id, Name, AddBy, AddDate);
     }
-
 }

@@ -22,6 +22,13 @@ public class Image : IEntity
     [StringLength(300)]
     public string? Url { get; set; }
 
+    [Required]
+    [ForeignKey("FK_Image_AddBy")]
+    public int AddBy { get; set; }
+
+    [Required]
+    public DateTime AddDate { get; set; }
+
     public Image()
     {
         Name = string.Empty;
@@ -33,11 +40,14 @@ public class Image : IEntity
                Id == image.Id &&
                Name == image.Name &&
                File == image.File &&
-               Url == image.Url;
+               Url == image.Url &&
+               AddBy == image.AddBy &&
+               AddDate == image.AddDate;
     }
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(Id, Name, File, Url);
+        return HashCode.Combine(Id, Name, File, Url, AddBy, AddDate);
     }
+
 }

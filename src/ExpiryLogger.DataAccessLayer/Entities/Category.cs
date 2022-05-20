@@ -15,6 +15,13 @@ public class Category : IEntity
     [StringLength(200)]
     public string Name { get; set; }
 
+    [Required]
+    [ForeignKey("FK_Category_AddBy")]
+    public int AddBy { get; set; }
+
+    [Required]
+    public DateTime AddDate { get; set; }
+
     public Category()
     {
         Name = string.Empty;
@@ -24,11 +31,14 @@ public class Category : IEntity
     {
         return obj is Category category &&
                Id == category.Id &&
-               Name == category.Name;
+               Name == category.Name &&
+               AddBy == category.AddBy &&
+               AddDate == category.AddDate;
     }
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(Id, Name);
+        return HashCode.Combine(Id, Name, AddBy, AddDate);
     }
+
 }

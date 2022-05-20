@@ -11,6 +11,8 @@ public class ProductDetail : IEntity
     public int ProductId { get; set; }
     public string Name { get; set; }
     public DateTime ExpirationDate { get; set; }
+    public int AddBy { get; set; }
+    public string Username { get; set; }
     public DateTime AddDate { get; set; }
 
     public int? CategoryId { get; set; }
@@ -27,6 +29,7 @@ public class ProductDetail : IEntity
     public ProductDetail()
     {
         Name = string.Empty;
+        Username = string.Empty;
     }
 
     public Category? GetCategory()
@@ -116,9 +119,12 @@ public class ProductDetail : IEntity
     public override bool Equals(object? obj)
     {
         return obj is ProductDetail detail &&
+               Id == detail.Id &&
                ProductId == detail.ProductId &&
                Name == detail.Name &&
                ExpirationDate == detail.ExpirationDate &&
+               AddBy == detail.AddBy &&
+               Username == detail.Username &&
                AddDate == detail.AddDate &&
                CategoryId == detail.CategoryId &&
                CategoryName == detail.CategoryName &&
@@ -133,9 +139,12 @@ public class ProductDetail : IEntity
     public override int GetHashCode()
     {
         HashCode hash = new HashCode();
+        hash.Add(Id);
         hash.Add(ProductId);
         hash.Add(Name);
         hash.Add(ExpirationDate);
+        hash.Add(AddBy);
+        hash.Add(Username);
         hash.Add(AddDate);
         hash.Add(CategoryId);
         hash.Add(CategoryName);
@@ -147,4 +156,5 @@ public class ProductDetail : IEntity
         hash.Add(LocationName);
         return hash.ToHashCode();
     }
+
 }

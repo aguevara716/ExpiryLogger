@@ -12,7 +12,9 @@ AS
         i.`Url` as `ImageUrl`,
         p.LocationId as `LocationId`,
         l.`Name` as `LocationName`,
-        p.AddDate as `AddDate`
+        p.AddBy as `UserId`,
+        p.AddDate as `AddDate`,
+        u.Username as `AddUser`
     FROM
         Products p
     LEFT JOIN
@@ -21,3 +23,5 @@ AS
         Categories c on p.CategoryId = c.Id
     LEFT JOIN
         Images i on p.ImageId = i.Id
+    JOIN
+        Users u on p.AddBy = u.Id

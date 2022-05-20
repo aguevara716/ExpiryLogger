@@ -6,5 +6,11 @@ CREATE OR REPLACE TABLE Images
     `File` VARCHAR(300),
     CONSTRAINT `UX_Image_File` UNIQUE (`File`),
     `Url` VARCHAR(300),
-    CONSTRAINT `UX_Image_Url` UNIQUE (`Url`)
-)
+    CONSTRAINT `UX_Image_Url` UNIQUE (`Url`),
+    AddBy INT NOT NULL,
+    CONSTRAINT `FK_Image_AddBy`
+        FOREIGN KEY (AddBy) REFERENCES Users(Id)
+        ON DELETE CASCADE
+        ON UPDATE RESTRICT,
+    AddDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);

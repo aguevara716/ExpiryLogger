@@ -25,6 +25,10 @@ public class Product : IEntity
     public int? LocationId { get; set; }
 
     [Required]
+    [ForeignKey("FK_Product_AddBy")]
+    public int AddBy { get; set; }
+
+    [Required]
     public DateTime AddDate { get; set; }
 
     public Product()
@@ -41,11 +45,13 @@ public class Product : IEntity
                CategoryId == product.CategoryId &&
                ImageId == product.ImageId &&
                LocationId == product.LocationId &&
+               AddBy == product.AddBy &&
                AddDate == product.AddDate;
     }
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(Id, Name, ExpirationDate, CategoryId, ImageId, LocationId, AddDate);
+        return HashCode.Combine(Id, Name, ExpirationDate, CategoryId, ImageId, LocationId, AddBy, AddDate);
     }
+
 }
