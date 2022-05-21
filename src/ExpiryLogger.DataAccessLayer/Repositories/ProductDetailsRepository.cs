@@ -6,64 +6,54 @@ public class ProductDetailsRepository : IRepository<ProductDetail>
 {
     private readonly ExpirationLoggerContext _dbContext;
     private readonly IRepository<Category> _categoryRepository;
-    private readonly IRepository<Image> _imageRepository;
     private readonly IRepository<Location> _locationRepository;
     private readonly IRepository<Product> _productRepository;
 
     public ProductDetailsRepository(ExpirationLoggerContext dbContext,
         IRepository<Category> categoryRepository,
-        IRepository<Image> imageRepository,
         IRepository<Location> locationRepository,
         IRepository<Product> productRepository)
     {
         _dbContext = dbContext;
         _categoryRepository = categoryRepository;
-        _imageRepository = imageRepository;
         _locationRepository = locationRepository;
         _productRepository = productRepository;
     }
 
     // create
-    public int Add(ProductDetail productDetail)
+    public int Add(ProductDetail productDetail, int creatorUserId)
     {
         var category = productDetail.GetCategory();
         if (category is not null && category.Id == 0)
-            _categoryRepository.Add(category);
-
-        var image = productDetail.GetImage();
-        if (image is not null && image.Id == 0)
-            _imageRepository.Add(image);
+            _categoryRepository.Add(category, creatorUserId);
 
         var location = productDetail.GetLocation();
         if (location is not null && location.Id == 0)
-            _locationRepository.Add(location);
+            _locationRepository.Add(location, creatorUserId);
 
         var product = productDetail.GetProduct();
-        var productsInserted = _productRepository.Add(product);
+        var productsInserted = _productRepository.Add(product, creatorUserId);
 
         return productsInserted;
     }
 
-    public int Add(IEnumerable<ProductDetail> productDetails)
+    public int Add(IEnumerable<ProductDetail> productDetails, int creatorUserId)
     {
-        var (categories, images, locations, products) = ExtractCollections(productDetails);
+        var (categories, locations, products) = ExtractCollections(productDetails);
         if (categories is not null && categories.Any())
-            _categoryRepository.Add(categories);
-
-        if (images is not null && images.Any())
-            _imageRepository.Add(images);
-
+            _categoryRepository.Add(categories, creatorUserId);
+        
         if (locations is not null && locations.Any())
-            _locationRepository.Add(locations);
+            _locationRepository.Add(locations, creatorUserId);
 
-        var productsInserted = _productRepository.Add(products);
+        var productsInserted = _productRepository.Add(products, creatorUserId);
         return productsInserted;
     }
 
     // read
     public ProductDetail? Get(int id)
     {
-        var productDetail = _dbContext.ProductDetails.FirstOrDefault(pd => pd.ProductId == id);
+        var productDetail = _dbContext.ProductDetails.FirstOrDefault(pd => pd.Id == id);
         return productDetail;
     }
 
@@ -102,38 +92,31 @@ public class ProductDetailsRepository : IRepository<ProductDetail>
     }
 
     // update
-    public int Update(ProductDetail productDetail)
+    public int Update(ProductDetail productDetail, int updaterUserId)
     {
         var category = productDetail.GetCategory();
         if (category is not null && category.Id > 0)
-            _categoryRepository.Update(category);
-
-        var image = productDetail.GetImage();
-        if (image is not null && image.Id > 0)
-            _imageRepository.Update(image);
+            _categoryRepository.Update(category, updaterUserId);
 
         var location = productDetail.GetLocation();
         if (location is not null && location.Id > 0)
-            _locationRepository.Update(location);
+            _locationRepository.Update(location, updaterUserId);
 
         var product = productDetail.GetProduct();
-        return _productRepository.Update(product);
+        return _productRepository.Update(product, updaterUserId);
     }
 
-    public int Update(IEnumerable<ProductDetail> productDetails)
+    public int Update(IEnumerable<ProductDetail> productDetails, int updaterUserId)
     {
-        var (categories, images, locations, products) = ExtractCollections(productDetails);
+        var (categories, locations, products) = ExtractCollections(productDetails);
 
         if (categories.Any())
-            _categoryRepository.Update(categories);
-
-        if (images.Any())
-            _imageRepository.Update(images);
+            _categoryRepository.Update(categories, updaterUserId);
 
         if (locations.Any())
-            _locationRepository.Update(locations);
+            _locationRepository.Update(locations, updaterUserId);
 
-        return _productRepository.Update(products);
+        return _productRepository.Update(products, updaterUserId);
     }
 
     // delete
@@ -147,12 +130,10 @@ public class ProductDetailsRepository : IRepository<ProductDetail>
 
     public int Delete(IEnumerable<ProductDetail> productDetails)
     {
-        var (categories, images, locations, products) = ExtractCollections(productDetails);
+        var (categories, locations, products) = ExtractCollections(productDetails);
 
         if (categories.Any())
             _categoryRepository.Delete(categories);
-        if (images.Any())
-            _imageRepository.Delete(images);
         if (locations.Any())
             _locationRepository.Delete(locations);
 
@@ -164,10 +145,6 @@ public class ProductDetailsRepository : IRepository<ProductDetail>
         var category = productDetail.GetCategory();
         if (category is not null && category.Id > 0)
             _categoryRepository.Delete(category);
-
-        var image = productDetail.GetImage();
-        if (image is not null && image.Id > 0)
-            _imageRepository.Delete(image);
 
         var location = productDetail.GetLocation();
         if (location is not null && location.Id > 0)
@@ -193,10 +170,9 @@ public class ProductDetailsRepository : IRepository<ProductDetail>
         return Delete(productDetails);
     }
 
-    private static (List<Category> categories, List<Image> images, List<Location> locations, List<Product> products) ExtractCollections(IEnumerable<ProductDetail> productDetails)
+    private static (List<Category> categories, List<Location> locations, List<Product> products) ExtractCollections(IEnumerable<ProductDetail> productDetails)
     {
         var categories = new List<Category>();
-        var images = new List<Image>();
         var locations = new List<Location>();
         var products = new List<Product>();
 
@@ -206,17 +182,13 @@ public class ProductDetailsRepository : IRepository<ProductDetail>
             if (category is not null)
                 categories.Add(category);
 
-            var image = productDetail.GetImage();
-            if (image is not null)
-                images.Add(image);
-
             var location = productDetail.GetLocation();
             if (location is not null)
                 locations.Add(location);
 
             products.Add(productDetail.GetProduct());
         }
-        return (categories, images, locations, products);
+        return (categories, locations, products);
     }
 
 }

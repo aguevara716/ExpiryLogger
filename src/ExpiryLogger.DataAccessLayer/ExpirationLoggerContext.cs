@@ -9,10 +9,10 @@ public class ExpirationLoggerContext : DbContext
     private readonly IConfiguration _configuration;
 
     public virtual DbSet<Category> Categories { get; set; } = null!;
-    public virtual DbSet<Image> Images { get; set; } = null!;
     public virtual DbSet<Location> Locations { get; set; } = null!;
     public virtual DbSet<Product> Products { get; set; } = null!;
     public virtual DbSet<ProductDetail> ProductDetails { get; set; } = null!;
+    public virtual DbSet<User> Users { get; set; } = null!;
 
     public ExpirationLoggerContext(IConfiguration configuration, DbContextOptions<ExpirationLoggerContext> options)
         : base(options)

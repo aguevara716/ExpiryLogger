@@ -10,10 +10,12 @@
     <None Remove="Entities\" />
     <None Remove="Pomelo.EntityFrameworkCore.MySql" />
     <None Remove="Repositories\" />
+    <None Remove="Extensions\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Entities\" />
     <Folder Include="Repositories\" />
+    <Folder Include="Extensions\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.1" />
