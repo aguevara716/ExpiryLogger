@@ -16,11 +16,18 @@ public class Location : IEntity
     public string Name { get; set; }
 
     [Required]
-    [ForeignKey("FK_Location_AddBy")]
-    public int AddBy { get; set; }
+    [ForeignKey("FK_Location_CreatorUserId")]
+    public int CreatorUserId { get; set; }
 
     [Required]
-    public DateTime AddDate { get; set; }
+    public DateTime CreateDate { get; set; }
+
+    [Required]
+    [ForeignKey("FK_Location_UpdaterUserId")]
+    public int UpdaterUserId { get; set; }
+
+    [Required]
+    public DateTime UpdateDate { get; set; }
 
     public Location()
     {
@@ -32,12 +39,15 @@ public class Location : IEntity
         return obj is Location location &&
                Id == location.Id &&
                Name == location.Name &&
-               AddBy == location.AddBy &&
-               AddDate == location.AddDate;
+               CreatorUserId == location.CreatorUserId &&
+               CreateDate == location.CreateDate &&
+               UpdaterUserId == location.UpdaterUserId &&
+               UpdateDate == location.UpdateDate;
     }
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(Id, Name, AddBy, AddDate);
+        return HashCode.Combine(Id, Name, CreatorUserId, CreateDate, UpdaterUserId, UpdateDate);
     }
+
 }

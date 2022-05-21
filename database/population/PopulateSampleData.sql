@@ -1,3 +1,5 @@
+SET @currentTime = CURRENT_TIMESTAMP;
+
 /*USERS*/
 DELETE FROM Users;
 ALTER TABLE Users AUTO_INCREMENT = 1;
@@ -7,7 +9,10 @@ INSERT INTO Users
     LastName,
     Username,
     HashedPassword,
-    AddBy
+    CreatorUserId,
+    CreateDate,
+    UpdaterUserId,
+    UpdateDate
 )
 VALUES
 (
@@ -15,39 +20,58 @@ VALUES
     'System', -- LastName,
     'SYSTEM', -- Username,
     'NotThePassword', -- HashedPassword
-    1
+    1, -- CreatorUserId,
+    @currentTime, -- CreateDate,
+    1, -- UpdaterUserId,
+    @currentTime -- UpdateDate
 ),
 (
     'John', -- FirstName,
     'Doe', -- LastName,
     'John.Doe@mailinator.com', -- Username,
     SHA1('JohnDoe123'), -- HashedPassword
-    1
+    1, -- CreatorUserId,
+    @currentTime, -- CreateDate,
+    1, -- UpdaterUserId,
+    @currentTime -- UpdateDate
 ),
 (
     'Jane', -- FirstName,
     'Doe', -- LastName,
     'Jane.Doe@mailinator.com', -- Username,
     SHA1('JaneDoe123'), -- HashedPassword
-    1
+    1, -- CreatorUserId,
+    @currentTime, -- CreateDate,
+    1, -- UpdaterUserId,
+    @currentTime -- UpdateDate
 );
 SET @SystemUserId = (SELECT Id FROM Users WHERE Username = 'SYSTEM');
+
 /*CATEGORIES*/
 DELETE FROM Categories;
 ALTER TABLE Categories AUTO_INCREMENT = 1;
 INSERT INTO Categories
 (
     `Name`,
-    AddBy
+    CreatorUserId,
+    CreateDate,
+    UpdaterUserId,
+    UpdateDate
 )
 VALUES
 (
     'Food',
-    @SystemUserId
+    @SystemUserId, -- CreatorUserId,
+    @currentTime, -- CreateDate,
+    @SystemUserId, -- UpdaterUserId,
+    @currentTime -- UpdateDate
 ),
 (
     'Medicine',
-    @SystemUserId
+    @SystemUserId, -- CreatorUserId,
+    @currentTime, -- CreateDate,
+    @SystemUserId, -- UpdaterUserId,
+    @currentTime -- UpdateDate
 );
 
 /*LOCATIONS*/
@@ -56,48 +80,39 @@ ALTER TABLE Locations AUTO_INCREMENT = 1;
 INSERT INTO Locations
 (
     `Name`,
-    AddBy
+    CreatorUserId,
+    CreateDate,
+    UpdaterUserId,
+    UpdateDate
 )
 VALUES
 (
     'Kitchen',
-    @SystemUserId
+    @SystemUserId, -- CreatorUserId,
+    @currentTime, -- CreateDate,
+    @SystemUserId, -- UpdaterUserId,
+    @currentTime -- UpdateDate
 ),
 (
     'Master Bathroom',
-    @SystemUserId
+    @SystemUserId, -- CreatorUserId,
+    @currentTime, -- CreateDate,
+    @SystemUserId, -- UpdaterUserId,
+    @currentTime -- UpdateDate
 ),
 (
     'Fridge',
-    @SystemUserId
+    @SystemUserId, -- CreatorUserId,
+    @currentTime, -- CreateDate,
+    @SystemUserId, -- UpdaterUserId,
+    @currentTime -- UpdateDate
 ),
 (
     'Pantry',
-    @SystemUserId
-);
-
-/*IMAGES*/
-DELETE FROM Images;
-ALTER TABLE Images AUTO_INCREMENT = 1;
-INSERT INTO Images
-(
-    `Name`,
-	`File`,
-	`Url`,
-    AddBy
-)
-VALUES
-(
-    'Apple', -- Name
-	NULL, -- File
-	'https://upload.wikimedia.org/wikipedia/commons/a/a6/Pink_lady_and_cross_section.jpg', -- Url
-    @SystemUserId -- AddBy
-),
-(
-    'Milk', -- Name
-	NULL, -- File
-	'https://www.meijer.com/content/dam/meijer/product/0004/12/5010/20/0004125010200_2_A1C1_0600.png', -- Url
-    @SystemUserId -- AddBy
+    @SystemUserId, -- CreatorUserId,
+    @currentTime, -- CreateDate,
+    @SystemUserId, -- UpdaterUserId,
+    @currentTime -- UpdateDate
 );
 
 /*PRODUCTS*/
@@ -107,25 +122,34 @@ INSERT INTO Products
 (
     `NAME`,
     ExpirationDate,
+    ImageUri,
     CategoryId,
-    ImageId,
     LocationId,
-    AddBy
+    CreatorUserId,
+    CreateDate,
+    UpdaterUserId,
+    UpdateDate
 )
 VALUES
 (
     'Apple', -- Name
     '2022-05-17', -- ExpirationDate
+    'https://upload.wikimedia.org/wikipedia/commons/a/a6/Pink_lady_and_cross_section.jpg', -- ImageUri
     1, -- CategoryId
-    1, -- ImageId
     1, -- LocationId
-    @SystemUserId -- AddBy
+    @SystemUserId, -- CreatorUserId,
+    @currentTime, -- CreateDate,
+    @SystemUserId, -- UpdaterUserId,
+    @currentTime -- UpdateDate
 ),
 (
     'Milk', -- Name
     '2022-05-10', -- ExpirationDate
+    'https://www.meijer.com/content/dam/meijer/product/0004/12/5010/20/0004125010200_2_A1C1_0600.png', -- ImageUri
     1, -- CategoryId
-    2, -- ImageId
     3, -- LocationId
-    @SystemUserId -- AddBy
+    @SystemUserId, -- CreatorUserId,
+    @currentTime, -- CreateDate,
+    @SystemUserId, -- UpdaterUserId,
+    @currentTime -- UpdateDate
 );

@@ -5,31 +5,31 @@ namespace ExpiryLogger.DataAccessLayer.Entities;
 [Table("ProductDetails")]
 public class ProductDetail : IEntity
 {
-    [NotMapped]
-    public int Id { get => ProductId; set => ProductId = value; }
-
-    public int ProductId { get; set; }
+    public int Id { get; set; }
     public string Name { get; set; }
     public DateTime ExpirationDate { get; set; }
-    public int AddBy { get; set; }
-    public string Username { get; set; }
-    public DateTime AddDate { get; set; }
-
+    public string ImageUri { get; set; }
+    
     public int? CategoryId { get; set; }
     public string? CategoryName { get; set; }
-
-    public int? ImageId { get; set; }
-    public string? ImageName { get; set; }
-    public string? ImageFile { get; set; }
-    public string? ImageUrl { get; set; }
-
+    
     public int? LocationId { get; set; }
     public string? LocationName { get; set; }
+
+    public int CreatorUserId { get; set; }
+    public string CreatorUsername { get; set; }
+    public DateTime CreateDate { get; set; }
+
+    public int UpdaterUserId { get; set; }
+    public string UpdaterUsername { get; set; }
+    public DateTime UpdateDate { get; set; }
 
     public ProductDetail()
     {
         Name = string.Empty;
-        Username = string.Empty;
+        ImageUri = string.Empty;
+        CreatorUsername = string.Empty;
+        UpdaterUsername = string.Empty;
     }
 
     public Category? GetCategory()
@@ -48,28 +48,6 @@ public class ProductDetail : IEntity
     {
         CategoryId = category?.Id;
         CategoryName = category?.Name;
-    }
-
-    public Image? GetImage()
-    {
-        if (!ImageId.HasValue && ImageName is null && ImageFile is null && ImageUrl is null)
-            return null;
-        var image = new Image
-        {
-            File = ImageFile,
-            Id = ImageId.GetValueOrDefault(),
-            Name = ImageName is null ? string.Empty : ImageName,
-            Url = ImageUrl
-        };
-        return image;
-    }
-
-    public void SetImage(Image? image)
-    {
-        ImageFile = image?.File;
-        ImageId = image?.Id;
-        ImageName = image?.Name;
-        ImageUrl = image?.Url;
     }
 
     public Location? GetLocation()
@@ -94,66 +72,68 @@ public class ProductDetail : IEntity
     {
         var product = new Product
         {
-            AddDate = AddDate,
             CategoryId = CategoryId,
+            CreateDate = CreateDate,
+            CreatorUserId = CreatorUserId,
             ExpirationDate = ExpirationDate,
-            Id = ProductId,
-            ImageId = ImageId,
+            Id = Id,
             LocationId = LocationId,
-            Name = Name
+            Name = Name,
+            UpdateDate = UpdateDate,
+            UpdaterUserId = UpdaterUserId
         };
         return product;
     }
 
     public void SetProduct(Product product)
     {
-        AddDate = product.AddDate;
         CategoryId = product.CategoryId;
+        CreateDate = product.CreateDate;
+        CreatorUserId = product.CreatorUserId;
         ExpirationDate = product.ExpirationDate;
-        ProductId = product.Id;
-        ImageId = product.ImageId;
+        Id = product.Id;
         LocationId = product.LocationId;
         Name = product.Name;
+        UpdateDate = product.UpdateDate;
+        UpdaterUserId = product.UpdaterUserId;
     }
 
     public override bool Equals(object? obj)
     {
         return obj is ProductDetail detail &&
                Id == detail.Id &&
-               ProductId == detail.ProductId &&
                Name == detail.Name &&
                ExpirationDate == detail.ExpirationDate &&
-               AddBy == detail.AddBy &&
-               Username == detail.Username &&
-               AddDate == detail.AddDate &&
+               ImageUri == detail.ImageUri &&
                CategoryId == detail.CategoryId &&
                CategoryName == detail.CategoryName &&
-               ImageId == detail.ImageId &&
-               ImageName == detail.ImageName &&
-               ImageFile == detail.ImageFile &&
-               ImageUrl == detail.ImageUrl &&
                LocationId == detail.LocationId &&
-               LocationName == detail.LocationName;
+               LocationName == detail.LocationName &&
+               CreatorUserId == detail.CreatorUserId &&
+               CreatorUsername == detail.CreatorUsername &&
+               CreateDate == detail.CreateDate &&
+               UpdaterUserId == detail.UpdaterUserId &&
+               UpdaterUsername == detail.UpdaterUsername &&
+               UpdateDate == detail.UpdateDate;
     }
 
     public override int GetHashCode()
     {
-        HashCode hash = new HashCode();
+        var hash = new HashCode();
         hash.Add(Id);
-        hash.Add(ProductId);
         hash.Add(Name);
         hash.Add(ExpirationDate);
-        hash.Add(AddBy);
-        hash.Add(Username);
-        hash.Add(AddDate);
+        hash.Add(ImageUri);
         hash.Add(CategoryId);
         hash.Add(CategoryName);
-        hash.Add(ImageId);
-        hash.Add(ImageName);
-        hash.Add(ImageFile);
-        hash.Add(ImageUrl);
         hash.Add(LocationId);
         hash.Add(LocationName);
+        hash.Add(CreatorUserId);
+        hash.Add(CreatorUsername);
+        hash.Add(CreateDate);
+        hash.Add(UpdaterUserId);
+        hash.Add(UpdaterUsername);
+        hash.Add(UpdateDate);
         return hash.ToHashCode();
     }
 

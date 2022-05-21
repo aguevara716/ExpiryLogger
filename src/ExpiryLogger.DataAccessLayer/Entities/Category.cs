@@ -16,11 +16,18 @@ public class Category : IEntity
     public string Name { get; set; }
 
     [Required]
-    [ForeignKey("FK_Category_AddBy")]
-    public int AddBy { get; set; }
+    [ForeignKey("FK_Category_CreatorUserId")]
+    public int CreatorUserId { get; set; }
 
     [Required]
-    public DateTime AddDate { get; set; }
+    public DateTime CreateDate { get; set; }
+
+    [Required]
+    [ForeignKey("FK_Category_UpdaterUserId")]
+    public int UpdaterUserId { get; set; }
+
+    [Required]
+    public DateTime UpdateDate { get; set; }
 
     public Category()
     {
@@ -32,13 +39,15 @@ public class Category : IEntity
         return obj is Category category &&
                Id == category.Id &&
                Name == category.Name &&
-               AddBy == category.AddBy &&
-               AddDate == category.AddDate;
+               CreatorUserId == category.CreatorUserId &&
+               CreateDate == category.CreateDate &&
+               UpdaterUserId == category.UpdaterUserId &&
+               UpdateDate == category.UpdateDate;
     }
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(Id, Name, AddBy, AddDate);
+        return HashCode.Combine(Id, Name, CreatorUserId, CreateDate, UpdaterUserId, UpdateDate);
     }
 
 }
