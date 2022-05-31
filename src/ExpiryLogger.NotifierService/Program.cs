@@ -4,6 +4,7 @@ using ExpiryLogger.DataAccessLayer.Repositories;
 using ExpiryLogger.NotifierService;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 using IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((hostBuilderContext, services) =>
@@ -36,8 +37,16 @@ static void InvokeWorkflow(IServiceProvider services)
     using var serviceScope = services.CreateScope();
     var provider = serviceScope.ServiceProvider;
 
-    var expirationNotifier = provider.GetRequiredService<IExpirationNotifier>();
-    ArgumentNullException.ThrowIfNull(expirationNotifier);
+    var logger = provider.GetRequiredService<ILogger<Program>>();
+    try
+    {
+        var expirationNotifier = provider.GetRequiredService<IExpirationNotifier>();
+        ArgumentNullException.ThrowIfNull(expirationNotifier);
 
-    expirationNotifier.NotifyRecipients();
+        expirationNotifier.NotifyRecipients();
+    }
+    catch (Exception ex)
+    {
+        logger.LogCritical(ex, "Unhandled exception");
+    }
 }
