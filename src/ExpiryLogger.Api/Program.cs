@@ -18,10 +18,10 @@ builder.Services
     .AddScoped<IUserService, UserService>()
     .AddEntityFrameworkMySql().AddDbContext<ExpirationLoggerContext>()
     .AddScoped<IRepository<Category>, MariaDbRepository<Category>>()
-    .AddScoped<IRepository<Image>, MariaDbRepository<Image>>()
     .AddScoped<IRepository<Location>, MariaDbRepository<Location>>()
     .AddScoped<IRepository<Product>, MariaDbRepository<Product>>()
     .AddScoped<IRepository<ProductDetail>, ProductDetailsRepository>()
+    .AddScoped<IRepository<User>, MariaDbRepository<User>>()
     ;
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

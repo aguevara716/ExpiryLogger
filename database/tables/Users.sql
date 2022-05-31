@@ -1,17 +1,19 @@
--- the type of product we're looking at (e.g. food)
-CREATE OR REPLACE TABLE Categories
+CREATE OR REPLACE TABLE Users
 (
-    Id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-    `Name` VARCHAR(200) NOT NULL,
-    CONSTRAINT `UX_Category_Name` UNIQUE (`Name`),
+    Id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    FirstName VARCHAR(100) NOT NULL,
+    LastName VARCHAR(100) NOT NULL,
+    Username VARCHAR(320) NOT NULL,
+    CONSTRAINT `UX_User_Username` UNIQUE (Username),
+    HashedPassword VARCHAR(40) NOT NULL, -- SHA1
     CreatorUserId INT NOT NULL,
-    CONSTRAINT `FK_Category_CreatorUserId`
+    CONSTRAINT `FK_User_CreatorUserId`
         FOREIGN KEY (CreatorUserId) REFERENCES Users(Id)
         ON DELETE CASCADE
         ON UPDATE RESTRICT,
     CreateDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     UpdaterUserId INT NOT NULL,
-    CONSTRAINT `FK_Category_UpdaterUserId`
+    CONSTRAINT `FK_User_UpdaterUserId`
         FOREIGN KEY (UpdaterUserId) REFERENCES Users(Id)
         ON DELETE CASCADE
         ON UPDATE RESTRICT,

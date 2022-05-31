@@ -18,14 +18,22 @@ public class Product : IEntity
     [ForeignKey("FK_Product_Category")]
     public int? CategoryId { get; set; }
 
-    [ForeignKey("FK_Product_Image")]
-    public int? ImageId { get; set; }
-
     [ForeignKey("FK_Product_Location")]
     public int? LocationId { get; set; }
 
     [Required]
-    public DateTime AddDate { get; set; }
+    [ForeignKey("FK_Product_CreatorUserId")]
+    public int CreatorUserId { get; set; }
+
+    [Required]
+    public DateTime CreateDate { get; set; }
+
+    [Required]
+    [ForeignKey("FK_Product_UpdaterUserId")]
+    public int UpdaterUserId { get; set; }
+
+    [Required]
+    public DateTime UpdateDate { get; set; }
 
     public Product()
     {
@@ -39,13 +47,26 @@ public class Product : IEntity
                Name == product.Name &&
                ExpirationDate == product.ExpirationDate &&
                CategoryId == product.CategoryId &&
-               ImageId == product.ImageId &&
                LocationId == product.LocationId &&
-               AddDate == product.AddDate;
+               CreatorUserId == product.CreatorUserId &&
+               CreateDate == product.CreateDate &&
+               UpdaterUserId == product.UpdaterUserId &&
+               UpdateDate == product.UpdateDate;
     }
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(Id, Name, ExpirationDate, CategoryId, ImageId, LocationId, AddDate);
+        var hash = new HashCode();
+        hash.Add(Id);
+        hash.Add(Name);
+        hash.Add(ExpirationDate);
+        hash.Add(CategoryId);
+        hash.Add(LocationId);
+        hash.Add(CreatorUserId);
+        hash.Add(CreateDate);
+        hash.Add(UpdaterUserId);
+        hash.Add(UpdateDate);
+        return hash.ToHashCode();
     }
+
 }

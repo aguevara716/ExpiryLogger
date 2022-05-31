@@ -18,6 +18,14 @@ public abstract class CrudControllerBase<T> : ControllerBase
         _repository = repository;
     }
 
+    private User GetUserFromContext()
+    {
+        var user = HttpContext.Items[nameof(User)] as User;
+        if (user is null)
+            throw new Exception($"The {nameof(HttpContent)} collection doesn't have a corresponding user");
+        return user;
+    }
+
     [HttpGet]
     public IActionResult Get()
     {
@@ -41,14 +49,16 @@ public abstract class CrudControllerBase<T> : ControllerBase
     [HttpPost]
     public IActionResult Post([FromBody] T entity)
     {
-        _ = _repository.Add(entity);
+        var user = GetUserFromContext();
+        _ = _repository.Add(entity, user.Id);
         return Ok(entity);
     }
 
     [HttpPut]
     public IActionResult Put([FromBody] T entity)
     {
-        _ = _repository.Update(entity);
+        var user = GetUserFromContext();
+        _ = _repository.Update(entity, user.Id);
         return Ok(entity);
     }
 

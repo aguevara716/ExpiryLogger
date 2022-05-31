@@ -13,20 +13,35 @@ namespace ExpiryLogger.DataAccessLayer.Repositories
         }
 
         // create
-        public int Add(T entity)
+        public int Add(T entity, int creatorUserId)
         {
             ArgumentNullException.ThrowIfNull(entity);
+
+            var now = DateTime.Now;
+            entity.CreateDate = now;
+            entity.CreatorUserId = creatorUserId;
+            entity.UpdateDate = now;
+            entity.UpdaterUserId = creatorUserId;
 
             _ = _dbContext.Add(entity);
             var rowsInserted = _dbContext.SaveChanges();
             return rowsInserted;
         }
 
-        public int Add(IEnumerable<T> entities)
+        public int Add(IEnumerable<T> entities, int creatorUserId)
         {
             ArgumentNullException.ThrowIfNull(entities);
             if (!entities.Any())
                 throw new ArgumentNullException(nameof(entities));
+
+            foreach (var entity in entities)
+            {
+                var now = DateTime.Now;
+                entity.CreateDate = now;
+                entity.CreatorUserId = creatorUserId;
+                entity.UpdateDate = now;
+                entity.UpdaterUserId = creatorUserId;
+            }
 
             _dbContext.AddRange(entities);
             var rowsInserted = _dbContext.SaveChanges();
@@ -77,15 +92,23 @@ namespace ExpiryLogger.DataAccessLayer.Repositories
         }
 
         // update
-        public int Update(T entity)
+        public int Update(T entity, int editorUserId)
         {
+            entity.UpdateDate = DateTime.Now;
+            entity.UpdaterUserId = editorUserId;
+
             _ = _dbContext.Set<T>().Update(entity);
             var rowsUpdated = _dbContext.SaveChanges();
             return rowsUpdated;
         }
 
-        public int Update(IEnumerable<T> entities)
+        public int Update(IEnumerable<T> entities, int editorUserId)
         {
+            foreach(var entity in entities)
+            {
+                entity.UpdateDate = DateTime.Now;
+                entity.UpdaterUserId = editorUserId;
+            }
             _dbContext.Set<T>().UpdateRange(entities);
             var rowsUpdated = _dbContext.SaveChanges();
             return rowsUpdated;
@@ -131,5 +154,6 @@ namespace ExpiryLogger.DataAccessLayer.Repositories
 
             return Delete(entities);
         }
+
     }
 }

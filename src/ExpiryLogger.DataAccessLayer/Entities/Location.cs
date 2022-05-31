@@ -15,6 +15,20 @@ public class Location : IEntity
     [StringLength(200)]
     public string Name { get; set; }
 
+    [Required]
+    [ForeignKey("FK_Location_CreatorUserId")]
+    public int CreatorUserId { get; set; }
+
+    [Required]
+    public DateTime CreateDate { get; set; }
+
+    [Required]
+    [ForeignKey("FK_Location_UpdaterUserId")]
+    public int UpdaterUserId { get; set; }
+
+    [Required]
+    public DateTime UpdateDate { get; set; }
+
     public Location()
     {
         Name = string.Empty;
@@ -24,12 +38,16 @@ public class Location : IEntity
     {
         return obj is Location location &&
                Id == location.Id &&
-               Name == location.Name;
+               Name == location.Name &&
+               CreatorUserId == location.CreatorUserId &&
+               CreateDate == location.CreateDate &&
+               UpdaterUserId == location.UpdaterUserId &&
+               UpdateDate == location.UpdateDate;
     }
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(Id, Name);
+        return HashCode.Combine(Id, Name, CreatorUserId, CreateDate, UpdaterUserId, UpdateDate);
     }
 
 }

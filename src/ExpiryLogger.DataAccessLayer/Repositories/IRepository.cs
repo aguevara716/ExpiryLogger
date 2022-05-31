@@ -5,8 +5,8 @@ namespace ExpiryLogger.DataAccessLayer.Repositories;
 public interface IRepository<T> where T : IEntity
 {
 	// create
-	int Add(T entity);
-	int Add(IEnumerable<T> entities);
+	int Add(T entity, int creatorUserId);
+	int Add(IEnumerable<T> entities, int creatorUserId);
 
 	// read
 	T? Get(int id);
@@ -18,8 +18,8 @@ public interface IRepository<T> where T : IEntity
 	T? GetFirstOrDefault(Func<T, bool> predicate);
 
 	// update
-	int Update(T entity);
-	int Update(IEnumerable<T> entities);
+	int Update(T entity, int editorUserId);
+	int Update(IEnumerable<T> entities, int editorUserId);
 
 	// delete
 	int Delete(int id);

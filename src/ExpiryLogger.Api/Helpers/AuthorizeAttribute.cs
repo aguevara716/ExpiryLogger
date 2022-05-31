@@ -1,4 +1,4 @@
-﻿using ExpiryLogger.Api.Entities;
+﻿using ExpiryLogger.DataAccessLayer.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 

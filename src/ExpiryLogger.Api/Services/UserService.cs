@@ -1,9 +1,11 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using ExpiryLogger.Api.Entities;
 using ExpiryLogger.Api.Helpers;
 using ExpiryLogger.Api.Models;
+using ExpiryLogger.DataAccessLayer.Entities;
+using ExpiryLogger.DataAccessLayer.Extensions;
+using ExpiryLogger.DataAccessLayer.Repositories;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -12,33 +14,25 @@ namespace ExpiryLogger.Api.Services;
 public interface IUserService
 {
     AuthenticateResponse? Authenticate(AuthenticateRequest model);
-    IEnumerable<User> GetAll();
+    IEnumerable<User>? GetAll();
     User? GetById(int id);
 }
 
 public class UserService : IUserService
 {
-    private readonly User[] _users = new[]
-    {
-        new User
-        {
-            Id = 1,
-            FirstName = "Test",
-            LastName = "User",
-            Username = "test",
-            Password = "test"
-        }
-    };
     private readonly AppSettings _appSettings;
+    private readonly IRepository<User> _userRepository;
 
-    public UserService(IOptions<AppSettings> appSettings)
+    public UserService(IOptions<AppSettings> appSettings, IRepository<User> userRepository)
     {
         _appSettings = appSettings.Value;
+        _userRepository = userRepository;
     }
 
     public AuthenticateResponse? Authenticate(AuthenticateRequest model)
     {
-        var user = _users.FirstOrDefault(u => u.Username == model.Username && u.Password == model.Password);
+        var hashedPassword = StringExtensions.GetSha1Hash(model.Password);
+        var user = _userRepository.GetFirstOrDefault(u => u.Username == model.Username && u.HashedPassword.Equals(hashedPassword, StringComparison.OrdinalIgnoreCase));
         if (user is null)
             return null;
 
@@ -64,13 +58,13 @@ public class UserService : IUserService
         return tokenString;
     }
 
-    public IEnumerable<User> GetAll()
+    public IEnumerable<User>? GetAll()
     {
-        return _users;
+        return _userRepository.Get();
     }
 
     public User? GetById(int id)
     {
-        return _users.FirstOrDefault(u => u.Id == id);
+        return _userRepository.Get(id);
     }
 }

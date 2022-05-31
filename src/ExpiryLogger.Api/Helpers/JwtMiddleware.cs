@@ -1,7 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Text;
-using ExpiryLogger.Api.Entities;
 using ExpiryLogger.Api.Services;
+using ExpiryLogger.DataAccessLayer.Entities;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -49,7 +49,7 @@ public class JwtMiddleware
             var userId = int.Parse(idClaim.Value);
 
             var user = GetUserFromCacheOrDatabase(token, userId, userService);
-            context.Items["User"] = _userCache[token];
+            context.Items["User"] = user;
         }
         catch (Exception ex)
         {

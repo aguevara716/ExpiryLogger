@@ -1,4 +1,4 @@
-﻿using ExpiryLogger.Api.Entities;
+﻿using ExpiryLogger.DataAccessLayer.Entities;
 
 namespace ExpiryLogger.Api.Models;
 
