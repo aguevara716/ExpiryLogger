@@ -11,10 +11,12 @@ public interface IEmailSender
 
 public class EmailSender : IEmailSender
 {
+    private readonly IEmailSettingsRetriever _emailSettingsRetriever;
     private readonly ILogger<IEmailSender> _logger;
 
-    public EmailSender(ILogger<IEmailSender> logger)
+    public EmailSender(IEmailSettingsRetriever emailSettingsRetriever, ILogger<IEmailSender> logger)
     {
+        _emailSettingsRetriever = emailSettingsRetriever;
         _logger = logger;
     }
 
@@ -23,10 +25,12 @@ public class EmailSender : IEmailSender
         _logger.LogTrace("SendEmail");
         try
         {
-            using var smtpClient = new SmtpClient(emailHost)
+            var emailSettings = _emailSettingsRetriever.GetEmailSettings();
+
+            using var smtpClient = new SmtpClient(emailSettings.Host)
             {
-                Port = emailPort,
-                Credentials = new NetworkCredential(emailUsername, emailPassword),
+                Port = emailSettings.Port,
+                Credentials = new NetworkCredential(emailSettings.Username, emailSettings.Password),
                 EnableSsl = true
             };
 
