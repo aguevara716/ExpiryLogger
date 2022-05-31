@@ -30,7 +30,7 @@ public class ExpirationNotifier : IExpirationNotifier
 
     public void NotifyRecipients()
     {
-        _logger.LogTrace("NotifyRecipients()");
+        _logger.LogTrace("NotifyRecipients");
         var emailData = _itemsRetriever.GetEmailData();
         var emailBody = _emailBodyBuilder.GetEmailMessage(emailData);
         if (emailBody.Length == 0)

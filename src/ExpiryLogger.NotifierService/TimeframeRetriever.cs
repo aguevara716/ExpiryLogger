@@ -22,7 +22,7 @@ public class TimeframeRetriever : ITimeframeRetriever
 
     public Timeframe GetCurrentMonth()
     {
-        _logger.LogTrace("GetCurrentMonth()");
+        _logger.LogTrace("GetCurrentMonth");
         var firstDayOfMonth = DateTimeExtensions.GetFirstDayOfCurrentMonth();
         var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddTicks(-1);
         var tf = new Timeframe(firstDayOfMonth, lastDayOfMonth);
@@ -32,7 +32,7 @@ public class TimeframeRetriever : ITimeframeRetriever
 
     public Timeframe GetCurrentWeek()
     {
-        _logger.LogTrace("GetCurrentWeek()");
+        _logger.LogTrace("GetCurrentWeek");
         var firstDayOfWeek = DateTimeExtensions.GetFirstDayOfCurrentWeek();
         var lastDayOfWeek = firstDayOfWeek.AddDays(7).AddTicks(-1);
         var tf = new Timeframe(firstDayOfWeek, lastDayOfWeek);
@@ -42,7 +42,7 @@ public class TimeframeRetriever : ITimeframeRetriever
 
     public Timeframe GetCurrentDay()
     {
-        _logger.LogTrace("GetCurrentDay()");
+        _logger.LogTrace("GetCurrentDay");
         var tomorrow = DateTime.Today.AddDays(1).AddTicks(-1);
         var tf = new Timeframe(DateTime.Today, tomorrow);
         _logger.LogTrace("Current day {timeframe}", tf);

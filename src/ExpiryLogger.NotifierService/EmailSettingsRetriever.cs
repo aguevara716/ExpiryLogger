@@ -20,7 +20,7 @@ public class EmailSettingsRetriever : IEmailSettingsRetriever
 
     public EmailSettings GetEmailSettings()
     {
-        _logger.LogTrace("GetEmailSettings()");
+        _logger.LogTrace("GetEmailSettings");
 
         if (!File.Exists(SETTINGS_FILENAME))
             throw new FileNotFoundException("Email settings not found", SETTINGS_FILENAME);

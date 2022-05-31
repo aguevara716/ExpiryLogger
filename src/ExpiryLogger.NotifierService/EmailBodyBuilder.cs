@@ -19,7 +19,7 @@ public class EmailBodyBuilder : IEmailBodyBuilder
 
     public string GetEmailMessage(EmailData emailData)
     {
-        _logger.LogTrace("GetEmailMessage(EmailData");
+        _logger.LogTrace("GetEmailMessage");
         ArgumentNullException.ThrowIfNull(emailData);
 
         var bodyBuilder = new StringBuilder();

@@ -38,6 +38,8 @@ static void InvokeWorkflow(IServiceProvider services)
     var provider = serviceScope.ServiceProvider;
 
     var logger = provider.GetRequiredService<ILogger<Program>>();
+    logger.LogTrace("InvokeWorkflow");
+
     try
     {
         var expirationNotifier = provider.GetRequiredService<IExpirationNotifier>();

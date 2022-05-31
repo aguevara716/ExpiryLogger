@@ -24,7 +24,7 @@ public class ItemsRetriever : IItemsRetriever
 
     public EmailData GetEmailData()
     {
-        _logger.LogTrace("GetEmailData()");
+        _logger.LogTrace("GetEmailData");
         var (firstDayOfMonth, lastDayOfMonth) = _timeframeRetriever.GetCurrentMonth();
         var (firstDayOfWeek, lastDayOfWeek) = _timeframeRetriever.GetCurrentWeek();
         var (today, tomorrow) = _timeframeRetriever.GetCurrentDay();
