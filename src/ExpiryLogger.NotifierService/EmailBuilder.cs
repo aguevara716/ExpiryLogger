@@ -12,11 +12,13 @@ public interface IEmailBuilder
 
 public class EmailBuilder : IEmailBuilder
 {
+	private readonly IEmailSettingsRetriever _emailSettingsRetriever;
 	private readonly ILogger<IEmailBuilder> _logger;
 	private readonly IRepository<User> _usersRepository;
 
-	public EmailBuilder(ILogger<IEmailBuilder> logger, IRepository<User> usersRepository)
+	public EmailBuilder(IEmailSettingsRetriever emailSettingsRetriever, ILogger<IEmailBuilder> logger, IRepository<User> usersRepository)
 	{
+		_emailSettingsRetriever = emailSettingsRetriever;
 		_logger = logger;
 		_usersRepository = usersRepository;
 	}
@@ -31,8 +33,8 @@ public class EmailBuilder : IEmailBuilder
         _logger.LogDebug("Found {recipientsCount:N0} recipients", recipients.Count);
 		var recipientsString = string.Join(",", recipients);
 
-		// TODO figure out how to pass in FROM
-		var mailMessage = new MailMessage(from: "home.5841@outlook.com", to: recipientsString, subject: "Expiration Summary", body: body);
+		var emailSettings = _emailSettingsRetriever.GetEmailSettings();
+		var mailMessage = new MailMessage(from: emailSettings.Username, to: recipientsString, subject: "Expiration Summary", body: body);
 		return mailMessage;
 	}
 }
